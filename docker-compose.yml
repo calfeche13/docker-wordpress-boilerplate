@@ -1,0 +1,36 @@
+services:
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    ports:
+      - '8080:80'
+    restart: no
+    volumes:
+      - './wordpress:/var/www/html:z'
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: password
+
+  db:
+    image: mariadb:lts-noble
+    volumes:
+      - './.db/data:/var/lib/mysql'
+    restart: no
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: password
+
+  php_myadmin:
+    image: phpmyadmin:latest
+    restart: no
+    ports:
+      - '8081:80'
+    environment:
+      PMA_HOSTS: db
+      MYSQL_ROOT_PASSWORD: root
