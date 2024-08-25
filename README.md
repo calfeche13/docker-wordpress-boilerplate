@@ -56,6 +56,8 @@ php_myadmin:
 ```
 
 4. Run docker-compose
+
+**_Note:_** If you skipped step 3, running below will generate the wordpress folder.
 ```sh
 # run docker compose in detach mode
 docker-compose up -d
