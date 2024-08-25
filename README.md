@@ -35,7 +35,7 @@ git remote set-url origin <remote_repo_url>
     └───index.php
 ```
 
-- Adjust the docker-compose.yml file accordingly
+4. Adjust the docker-compose.yml file if needed
 ```yml
 services:
 
@@ -55,7 +55,7 @@ php_myadmin:
       - '8081:80' # adjust the exposed port accordingly
 ```
 
-4. Run docker-compose
+5. Run docker-compose
 
 **_Note:_** If you skipped step 3, running below will generate the wordpress folder.
 ```sh
