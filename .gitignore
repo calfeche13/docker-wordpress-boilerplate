@@ -35,6 +35,12 @@
 # htaccess
 /wordpress/.htaccess
 
+# db data folder
+.db
+
+# MAC DS_Store
+.DS_Store
+
 # All plugins
 #
 # Note: If you wish to whitelist plugins,
