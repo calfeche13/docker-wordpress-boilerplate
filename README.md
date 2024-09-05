@@ -48,7 +48,7 @@ services:
 
     ⋮
 
-php_myadmin:
+  php_myadmin:
     image: phpmyadmin:latest
     restart: no
     ports:
