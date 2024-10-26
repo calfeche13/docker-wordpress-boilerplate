@@ -44,13 +44,6 @@ services:
     profiles:
       - dev
 
-  setup-wordpress:
-    <<: *base-wordpress
-    ports:
-      - '80:80'
-    profiles:
-      - setup
-
   wordpress:
     <<: *base-wordpress
     profiles:
