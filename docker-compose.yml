@@ -10,9 +10,9 @@ services:
       - '443:443'
     restart: unless-stopped
     volumes:
-      - ./nginx/conf/:/etc/nginx/conf.d/:ro
-      - ./certbot/www:/var/www/certbot/:ro
-      - ./certbot/ssl/:/etc/nginx/ssl/:ro
+      - './nginx/conf/:/etc/nginx/conf.d/:ro'
+      - './certbot/www:/var/www/certbot/:ro'
+      - './certbot/ssl/:/etc/nginx/ssl/:ro'
 
   certbot:
     container_name: certbot
@@ -20,10 +20,10 @@ services:
     profiles:
       - prod
     volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/ssl/:/etc/letsencrypt/:rw
+      - './certbot/www/:/var/www/certbot/:rw'
+      - './certbot/ssl/:/etc/letsencrypt/:rw'
 
-  wordpress:
+  base-wordpress: &base-wordpress
     container_name: wordpress
     depends_on:
       - db
@@ -38,12 +38,16 @@ services:
       WORDPRESS_DB_PASSWORD: password
 
   dev-wordpress:
-    extends:
-      service: wordpress
-    profiles:
-      - dev
+    <<: *base-wordpress
     ports:
       - '8080:80'
+    profiles:
+      - dev
+
+  wordpress:
+    <<: *base-wordpress
+    profiles:
+      - prod
 
   db:
     container_name: db

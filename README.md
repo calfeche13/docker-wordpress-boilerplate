@@ -71,11 +71,11 @@ docker-compose up -d
 docker-compose up
 
 # run docker compose with profile dev in detached mode
-docker-compose up --profile dev -d
+docker-compose --profile dev up -d
 
 # run docker compose with profile debug in detached mode
-docker-compose up --profile debug -d
+docker-compose --profile debug up -d
 
 # run docker compose with profile prod in detached mode
-docker-compose up --profile prod -d
+docker-compose --profile prod up -d
 ```
