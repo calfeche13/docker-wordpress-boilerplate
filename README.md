@@ -79,3 +79,22 @@ docker-compose --profile debug up -d
 # run docker compose with profile prod in detached mode
 docker-compose --profile prod up -d
 ```
+
+### Prod create cert with Certbot
+To check if certbot will be able to create a cert run --dry-run first.
+
+```sh
+sudo docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d example.org --dry-run
+```
+
+Once it shows a successful message you should now be able to run without the --dry-run flag to generate your ssl certificates.
+
+```sh
+sudo docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d example.org
+```
+
+To renew your certificate run command below.
+
+```sh
+sudo docker-compose run --rm certbot renew
+```
