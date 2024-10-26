@@ -65,19 +65,19 @@ This docker-compose has 3 profiles.
 **_Note:_** If you skipped step 3, running below will generate the wordpress folder.
 ```sh
 # run docker compose in detach mode
-docker-compose up -d
+sudo docker-compose up -d
 
 # run docker compose without detach mode
-docker-compose up
+sudo docker-compose up
 
 # run docker compose with profile dev in detached mode
-docker-compose --profile dev up -d
+sudo docker-compose --profile dev up -d
 
 # run docker compose with profile debug in detached mode
-docker-compose --profile debug up -d
+sudo docker-compose --profile debug up -d
 
 # run docker compose with profile prod in detached mode
-docker-compose --profile prod up -d
+sudo docker-compose --profile prod up -d
 ```
 
 ### Prod create cert with Certbot
@@ -98,3 +98,45 @@ To renew your certificate run command below.
 ```sh
 sudo docker-compose run --rm certbot renew
 ```
+
+### Prod setup
+
+First disable `./nginx/conf/wordpress.conf`.
+
+```sh
+mv ./nginx/conf/wordpress.conf ./nginx/conf/wordpress.conf.disabled
+```
+
+Run docker prod setup.
+
+```sh
+sudo docker-compose --profile prod up -d
+```
+
+Once everything is now running, run certbot with `--dry-run` flag.
+
+```sh
+sudo docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d example.org --dry-run
+```
+
+__*Note: if first run fails wait for a few minutes and re run above again.*__
+
+Once you get the successful message you can then run it without the `--dry-run` flag.
+
+```sh
+sudo docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d example.org
+```
+
+After that enable `./nginx/conf/wordpress.conf`.
+
+```sh
+mv ./nginx/conf/wordpress.conf.disabled ./nginx/conf/wordpress.conf
+```
+
+Rerun docker-compose again.
+
+```sh
+sudo docker-compose down && sudo docker-compose up --profile prod up -d
+```
+
+Access your website via the domain then you should be able to be redirected to the wordpress setup page.
