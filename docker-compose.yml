@@ -23,7 +23,7 @@ services:
       - './certbot/www/:/var/www/certbot/:rw'
       - './certbot/ssl/:/etc/letsencrypt/:rw'
 
-  base-wordpress: &base-wordpress
+  x-wordpress: &base-wordpress
     container_name: wordpress
     depends_on:
       - db
