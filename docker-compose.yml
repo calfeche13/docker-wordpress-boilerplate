@@ -1,12 +1,34 @@
 services:
 
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    profiles:
+      - prod
+    ports:
+      - '80:80'
+      - '443:443'
+    restart: unless-stopped
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/ssl/:/etc/nginx/ssl/:ro
+
+  certbot:
+    container_name: certbot
+    image: certbot/certbot:latest
+    profiles:
+      - prod
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/ssl/:/etc/letsencrypt/:rw
+
   wordpress:
+    container_name: wordpress
     depends_on:
       - db
     image: wordpress:latest
-    ports:
-      - '8080:80'
-    restart: no
+    restart: unless-stopped
     volumes:
       - './wordpress:/var/www/html:z'
     environment:
@@ -15,11 +37,20 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: password
 
+  dev-wordpress:
+    extends:
+      service: wordpress
+    profiles:
+      - dev
+    ports:
+      - '8080:80'
+
   db:
+    container_name: db
     image: mariadb:lts-noble
     volumes:
       - './.db/data:/var/lib/mysql'
-    restart: no
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: wordpress
@@ -27,8 +58,12 @@ services:
       MYSQL_PASSWORD: password
 
   php_myadmin:
+    container_name: php_myadmin
     image: phpmyadmin:latest
-    restart: no
+    profiles:
+      - dev
+      - debug
+    restart: unless-stopped
     ports:
       - '8081:80'
     environment:

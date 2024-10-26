@@ -4,7 +4,7 @@ Docker setup for wordpress development environment using docker-compose.
 
 ## How to use
 
-1. Clone this repository
+### Clone this repository
 ```sh
 # via HTTPS
 git clone https://github.com/calfeche13/docker-wordpress-boilerplate.git
@@ -16,12 +16,12 @@ git clone git@github.com:calfeche13/docker-wordpress-boilerplate.git
 gh repo clone calfeche13/docker-wordpress-boilerplate
 ```
 
-2. Update remote repository
+### Update remote repository
 ```sh
 git remote set-url origin <remote_repo_url>
 ```
 
-3. Installation (If you are starting fresh I suggest go to step 4)
+### Moving existing docker files (If you are starting fresh I suggest go to step 4)
 - Put WordPress files inside wordpress folder, you should have a directory that looks like below.
 ```
 <project root>
@@ -35,7 +35,7 @@ git remote set-url origin <remote_repo_url>
     └───index.php
 ```
 
-4. Adjust the docker-compose.yml file if needed
+### Adjust the docker-compose.yml file if needed
 ```yml
 services:
 
@@ -55,7 +55,12 @@ services:
       - '8081:80' # adjust the exposed port accordingly
 ```
 
-5. Run docker-compose
+### Run docker-compose
+
+This docker-compose has 3 profiles.
+1. dev - used when developing the app on your local pc
+2. debug - prod like but enables php-myadmin
+3. prod - enables nginx and certbot for ssl generation
 
 **_Note:_** If you skipped step 3, running below will generate the wordpress folder.
 ```sh
@@ -64,4 +69,13 @@ docker-compose up -d
 
 # run docker compose without detach mode
 docker-compose up
+
+# run docker compose with profile dev in detached mode
+docker-compose up --profile dev -d
+
+# run docker compose with profile debug in detached mode
+docker-compose up --profile debug -d
+
+# run docker compose with profile prod in detached mode
+docker-compose up --profile prod -d
 ```
